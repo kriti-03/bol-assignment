@@ -1,26 +1,26 @@
 package main
 
 import (
+	"github.com/pablocrivella/mancala/internal/engine"
 	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/pablocrivella/mancala/internal/games"
-	"github.com/pablocrivella/mancala/internal/infrastructure/persistence"
 	"github.com/pablocrivella/mancala/internal/restapi"
 	"github.com/pablocrivella/mancala/internal/restapi/resources"
 )
 
 func main() {
-	redisURL, ok := os.LookupEnv("REDIS_URL")
-	if !ok {
-		panic("missing env variable: REDIS_URL")
-	}
-	redisClient, err := persistence.NewRedisClient(redisURL)
-	if err != nil {
-		panic(err)
-	}
-	gameRepo := persistence.NewGameRepo(redisClient)
+	//redisURL, ok := os.LookupEnv("REDIS_URL")
+	//if !ok {
+	//	panic("missing env variable: REDIS_URL")
+	//}
+	//redisClient, err := persistence.NewRedisClient(redisURL)
+	//if err != nil {
+	//	panic(err)
+	//}
+	gameRepo := games.NewFakeGameRepo(engine.Game{})
 
 	e := echo.New()
 	e.File("/", "website/public/index.html")

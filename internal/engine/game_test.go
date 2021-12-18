@@ -17,7 +17,7 @@ func TestGame_PlayTurn(t *testing.T) {
 		{
 			name:     "when player1 captures one stone and has to play another turn",
 			pitIndex: 0,
-			game:     NewGame("Rick", "Morty"),
+			game:     NewBoard("Rick", "Morty"),
 			wantedGame: Game{
 				BoardSide1: BoardSide{
 					Pits:  buildPits(0, 7, 7, 7, 7, 7),

@@ -1,4 +1,4 @@
-package games
+package datastore
 
 import (
 	"github.com/pablocrivella/mancala/internal/engine"
@@ -9,8 +9,8 @@ type InMemoryGameRepo struct {
 	db map[string]engine.Game
 }
 
-// NewFakeGameRepo returns an in-memory implementation of a GameRepo.
-func NewFakeGameRepo(games ...engine.Game) GameRepo {
+// NewGameRepo returns an in-memory implementation of a GameRepo.
+func NewGameRepo(games ...engine.Game) GameRepo {
 	db := make(map[string]engine.Game)
 	for _, g := range games {
 		db[g.ID.String()] = g

@@ -1,4 +1,4 @@
-package resources
+package utility
 
 type (
 	// ValidationError represents a validation error

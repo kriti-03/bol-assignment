@@ -1,12 +1,14 @@
 package engine
 
+import "github.com/pablocrivella/mancala/internal/model"
+
 type (
 	pitsArray [pitsPerSide]int64
 	// BoardSide represents one of the sides of the board
 	BoardSide struct {
-		Pits   pitsArray `json:"pits"`
-		Store  int64     `json:"store"`
-		Player Player    `json:"player"`
+		Pits   pitsArray    `json:"pits"`
+		Store  int64        `json:"store"`
+		Player model.Player `json:"player"`
 	}
 )
 

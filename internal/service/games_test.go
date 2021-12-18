@@ -1,27 +1,25 @@
-package resources
+package service
 
 import (
+	"github.com/pablocrivella/mancala/internal/datastore"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 
-	"github.com/alicebob/miniredis/v2"
-	"github.com/go-redis/redis/v8"
 	"github.com/labstack/echo/v4"
 	"github.com/pablocrivella/mancala/internal/engine"
-	"github.com/pablocrivella/mancala/internal/games"
-	"github.com/pablocrivella/mancala/internal/infrastructure/persistence"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGamesResource_Create(t *testing.T) {
-	s, closeRedisFunc := startFakeRedisServer(t)
-	defer closeRedisFunc()
+	//s, closeRedisFunc := startFakeRedisServer(t)
+	//defer closeRedisFunc()
 
-	redisClient := newRedisClient(t, "redis://"+s.Addr())
-	gameRepo := persistence.NewGameRepo(redisClient)
-	h := GamesResource{GamesService: games.NewService(gameRepo)}
+	//redisClient := newRedisClient(t, "redis://"+s.Addr())
+	//gameRepo := persistence.NewGameRepo(redisClient)
+	gameRepo := datastore.NewGameRepo(engine.Game{})
+	h := GamesResource{GamesService: NewService(gameRepo)}
 	e := echo.New()
 
 	testCases := []struct {
@@ -51,12 +49,13 @@ func TestGamesResource_Create(t *testing.T) {
 }
 
 func TestGamesResource_Update(t *testing.T) {
-	s, closeRedisFunc := startFakeRedisServer(t)
-	defer closeRedisFunc()
-
-	redisClient := newRedisClient(t, "redis://"+s.Addr())
-	gameRepo := persistence.NewGameRepo(redisClient)
-	gamesService := games.NewService(gameRepo)
+	//s, closeRedisFunc := startFakeRedisServer(t)
+	//defer closeRedisFunc()
+	//
+	//redisClient := newRedisClient(t, "redis://"+s.Addr())
+	//gameRepo := persistence.NewGameRepo(redisClient)
+	gameRepo := datastore.NewGameRepo(engine.Game{})
+	gamesService := NewService(gameRepo)
 	h := GamesResource{GamesService: gamesService}
 	e := echo.New()
 	g, err := gamesService.CreateGame("Rick", "Morty")
@@ -97,12 +96,13 @@ func TestGamesResource_Update(t *testing.T) {
 }
 
 func TestGamesResorce_Show(t *testing.T) {
-	s, closeRedisFunc := startFakeRedisServer(t)
-	defer closeRedisFunc()
-
-	redisClient := newRedisClient(t, "redis://"+s.Addr())
-	gameRepo := persistence.NewGameRepo(redisClient)
-	gamesService := games.NewService(gameRepo)
+	//s, closeRedisFunc := startFakeRedisServer(t)
+	//defer closeRedisFunc()
+	//
+	//redisClient := newRedisClient(t, "redis://"+s.Addr())
+	//gameRepo := persistence.NewGameRepo(redisClient)
+	gameRepo := datastore.NewGameRepo(engine.Game{})
+	gamesService := NewService(gameRepo)
 	h := GamesResource{GamesService: gamesService}
 	g, err := gamesService.CreateGame("Rick", "Morty")
 	if err != nil {
@@ -141,18 +141,18 @@ func TestGamesResorce_Show(t *testing.T) {
 	}
 }
 
-func startFakeRedisServer(t *testing.T) (*miniredis.Miniredis, func()) {
-	s, err := miniredis.Run()
-	if err != nil {
-		t.Fatalf("err: %s", err)
-	}
-	return s, func() { s.Close() }
-}
-
-func newRedisClient(t *testing.T, url string) *redis.Client {
-	c, err := persistence.NewRedisClient(url)
-	if err != nil {
-		t.Fatalf("err: %s", err)
-	}
-	return c
-}
+//func startFakeRedisServer(t *testing.T) (*miniredis.Miniredis, func()) {
+//	s, err := miniredis.Run()
+//	if err != nil {
+//		t.Fatalf("err: %s", err)
+//	}
+//	return s, func() { s.Close() }
+//}
+//
+//func newRedisClient(t *testing.T, url string) *redis.Client {
+//	c, err := persistence.NewRedisClient(url)
+//	if err != nil {
+//		t.Fatalf("err: %s", err)
+//	}
+//	return c
+//}

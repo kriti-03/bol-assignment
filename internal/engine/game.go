@@ -2,6 +2,7 @@ package engine
 
 import (
 	"github.com/google/uuid"
+	"github.com/pablocrivella/mancala/internal/utility"
 )
 
 const (
@@ -44,17 +45,17 @@ type (
 // PlayTurn from the given pitIndex for the current playingSide.
 func (game *Game) PlayTurn(pitIndex int64) error {
 	if pitIndex < 0 || pitIndex > pitsPerSide-1 {
-		return &InvalidPlayError{Msg: "pit index is invalid"}
+		return &utility.InvalidPlayError{Msg: "pit index is invalid"}
 	}
 
 	if game.IsDone() {
-		return &InvalidPlayError{Msg: "game is already done"}
+		return &utility.InvalidPlayError{Msg: "game is already done"}
 	}
 
 	stones := game.playingSide().pickStones(pitIndex)
 
 	if stones == 0 {
-		return &InvalidPlayError{Msg: "selected pit is empty"}
+		return &utility.InvalidPlayError{Msg: "selected pit is empty"}
 	}
 
 	game.placeStones(pitIndex+1, stones)

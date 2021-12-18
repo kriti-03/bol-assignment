@@ -1,6 +1,7 @@
-package resources
+package service
 
 import (
+	"github.com/pablocrivella/mancala/internal/datastore"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -8,7 +9,6 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/pablocrivella/mancala/internal/engine"
-	"github.com/pablocrivella/mancala/internal/games"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,8 +18,8 @@ func TestGamesResource_Create(t *testing.T) {
 
 	//redisClient := newRedisClient(t, "redis://"+s.Addr())
 	//gameRepo := persistence.NewGameRepo(redisClient)
-	gameRepo := games.NewFakeGameRepo(engine.Game{})
-	h := GamesResource{GamesService: games.NewService(gameRepo)}
+	gameRepo := datastore.NewGameRepo(engine.Game{})
+	h := GamesResource{GamesService: NewService(gameRepo)}
 	e := echo.New()
 
 	testCases := []struct {
@@ -54,8 +54,8 @@ func TestGamesResource_Update(t *testing.T) {
 	//
 	//redisClient := newRedisClient(t, "redis://"+s.Addr())
 	//gameRepo := persistence.NewGameRepo(redisClient)
-	gameRepo := games.NewFakeGameRepo(engine.Game{})
-	gamesService := games.NewService(gameRepo)
+	gameRepo := datastore.NewGameRepo(engine.Game{})
+	gamesService := NewService(gameRepo)
 	h := GamesResource{GamesService: gamesService}
 	e := echo.New()
 	g, err := gamesService.CreateGame("Rick", "Morty")
@@ -101,8 +101,8 @@ func TestGamesResorce_Show(t *testing.T) {
 	//
 	//redisClient := newRedisClient(t, "redis://"+s.Addr())
 	//gameRepo := persistence.NewGameRepo(redisClient)
-	gameRepo := games.NewFakeGameRepo(engine.Game{})
-	gamesService := games.NewService(gameRepo)
+	gameRepo := datastore.NewGameRepo(engine.Game{})
+	gamesService := NewService(gameRepo)
 	h := GamesResource{GamesService: gamesService}
 	g, err := gamesService.CreateGame("Rick", "Morty")
 	if err != nil {

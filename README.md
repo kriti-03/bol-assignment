@@ -32,7 +32,7 @@ curl -X POST http://localhost:1323/v1/games -H "Content-Type: application/json" 
 To show the state of a game:
 
 ```bash
-curl http://localhost:1323/v1/games/5f489bec-ca14-4eaf-b168-d0bcc5c7e1fd
+curl http://localhost:1323/v1/games/215663b9-b772-4f21-a69a-befb800741c7
 ```
 
 To perform the next play:

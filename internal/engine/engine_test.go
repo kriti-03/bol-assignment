@@ -7,7 +7,7 @@ import (
 )
 
 func TestNewGame(t *testing.T) {
-	game := NewGame("Rick", "Morty")
+	game := NewBoard("Rick", "Morty")
 
 	assert.Equal(t, game.BoardSide1.Pits, fullSidePits)
 	assert.Equal(t, game.BoardSide2.Pits, fullSidePits)

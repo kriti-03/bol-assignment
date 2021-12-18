@@ -1,4 +1,4 @@
-package games
+package datastore
 
 import "github.com/pablocrivella/mancala/internal/engine"
 

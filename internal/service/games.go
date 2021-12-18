@@ -1,19 +1,17 @@
-package resources
+package service
 
 import (
+	"github.com/pablocrivella/mancala/internal/utility"
 	"net/http"
 	"strings"
 
 	"github.com/labstack/echo/v4"
-	"github.com/pablocrivella/mancala/internal/engine"
-	"github.com/pablocrivella/mancala/internal/games"
-	"github.com/pablocrivella/mancala/internal/infrastructure/persistence"
 )
 
 type (
 	// GamesResource handles the requests for the games resource.
 	GamesResource struct {
-		GamesService games.Service
+		GamesService MancalaService
 	}
 
 	CreateGameRequestBody struct {
@@ -52,7 +50,7 @@ func (h GamesResource) Show(c echo.Context) error {
 	g, err := h.GamesService.FindGame(c.Param("id"))
 	if err != nil {
 		switch e := err.(type) {
-		case *persistence.NotFoundError:
+		case *utility.NotFoundError:
 			return c.JSON(http.StatusNotFound, e.Error())
 		default:
 			return echo.NewHTTPError(http.StatusInternalServerError, e.Error())
@@ -75,12 +73,12 @@ func (h GamesResource) Update(c echo.Context) error {
 	g, err := h.GamesService.ExecutePlay(c.Param("id"), b.PitIndex)
 	if err != nil {
 		switch e := err.(type) {
-		case *persistence.NotFoundError:
+		case *utility.NotFoundError:
 			return c.JSON(http.StatusNotFound, e.Error())
-		case *engine.InvalidPlayError:
+		case *utility.InvalidPlayError:
 			return echo.NewHTTPError(
 				http.StatusUnprocessableEntity,
-				ValidationErrors{Errors: []ValidationError{{Field: "base", Msg: e.Error()}}},
+				utility.ValidationErrors{Errors: []utility.ValidationError{{Field: "base", Msg: e.Error()}}},
 			)
 		default:
 			return echo.NewHTTPError(http.StatusInternalServerError, e.Error())
@@ -90,8 +88,8 @@ func (h GamesResource) Update(c echo.Context) error {
 }
 
 // Validate checks the request body for errors.
-func (b CreateGameRequestBody) Validate() ValidationErrors {
-	v := ValidationErrors{}
+func (b CreateGameRequestBody) Validate() utility.ValidationErrors {
+	v := utility.ValidationErrors{}
 	if strings.TrimSpace(b.Player1) == "" {
 		v.Add("player1", "cannot be blank")
 	}

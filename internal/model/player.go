@@ -1,4 +1,4 @@
-package engine
+package model
 
 type (
 	// Player represents a player of the mancala game
